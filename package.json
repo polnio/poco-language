@@ -6,6 +6,7 @@
   "scripts": {
     "test": "vitest",
     "build": "tsc",
+    "build:bin": "pkg build/index.js --out-path dist -t node18",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix"
   },
@@ -22,8 +23,13 @@
     "eslint-plugin-n": "^15.0.0 || ^16.0.0 ",
     "eslint-plugin-prettier": "^5.0.0",
     "eslint-plugin-promise": "^6.0.0",
+    "pkg": "^5.8.1",
     "prettier": "^3.0.0",
     "typescript": "^5.1.6",
     "vitest": "^0.33.0"
+  },
+  "pkg": {
+    "scripts": "build/**/*.js",
+    "outputPath": "dist"
   }
 }
