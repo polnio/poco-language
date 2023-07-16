@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
-import interprete from "../src/interprete";
-import { NumberValue } from "../src/Value";
+import interprete from "../src/runtime/interprete";
+import { NumberValue } from "../src/data/Value";
 
 describe("numerical statement", () => {
   it("should parse basic operations", () => {

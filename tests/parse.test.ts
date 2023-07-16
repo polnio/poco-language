@@ -1,6 +1,11 @@
 import { describe, expect, it } from "vitest";
-import { AssignNode, BinaryOpNode, NumberNode, ProgramNode } from "../src/Ast";
-import parse from "../src/parse";
+import {
+  AssignNode,
+  BinaryOpNode,
+  NumberNode,
+  ProgramNode,
+} from "../src/data/Ast";
+import parse from "../src/runtime/parse";
 
 describe("asignments", () => {
   it("should parse constant asignment", () => {

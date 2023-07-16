@@ -1,5 +1,5 @@
 import { expect, it } from "vitest";
-import lex from "../src/lex";
+import lex from "../src/runtime/lex";
 import {
   IdentifierToken,
   EqToken,
@@ -8,7 +8,7 @@ import {
   BinaryOpToken,
   OpenParenToken,
   CloseParenToken,
-} from "../src/Token";
+} from "../src/data/Token";
 
 it("should tokenize assingment", () => {
   expect(lex("let x = 1")).toEqual([

@@ -8,8 +8,8 @@ import {
   NullNode,
   StringNode,
   AssignNode,
-} from "./Ast";
-import type Token from "./Token";
+} from "../data/Ast";
+import type Token from "../data/Token";
 import {
   AssignToken,
   BinaryOpToken,
@@ -20,7 +20,7 @@ import {
   NumberToken,
   OpenParenToken,
   StringToken,
-} from "./Token";
+} from "../data/Token";
 import lex from "./lex";
 
 function safeShiftToken(tokens: Token[]): Token {

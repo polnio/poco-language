@@ -1,4 +1,4 @@
-import type Token from "./Token";
+import type Token from "../data/Token";
 import {
   AssignToken,
   BinaryOpToken,
@@ -10,7 +10,7 @@ import {
   NumberToken,
   OpenParenToken,
   StringToken,
-} from "./Token";
+} from "../data/Token";
 
 const keywordsToToken: Record<string, Token> = {
   let: new AssignToken(),

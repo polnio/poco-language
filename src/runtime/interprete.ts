@@ -8,10 +8,15 @@ import {
   NumberNode,
   IdentifierNode,
   AssignNode,
-} from "./Ast";
-import Environment from "./Environment";
-import type Value from "./Value";
-import { BooleanValue, NullValue, NumberValue, StringValue } from "./Value";
+} from "../data/Ast";
+import Environment from "../data/Environment";
+import type Value from "../data/Value";
+import {
+  BooleanValue,
+  NullValue,
+  NumberValue,
+  StringValue,
+} from "../data/Value";
 import parse from "./parse";
 
 const numericalOperations: Record<
