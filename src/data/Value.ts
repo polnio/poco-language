@@ -26,3 +26,20 @@ export class NullValue extends Value {
     this.value = null;
   }
 }
+
+export class FunctionValue<
+  Args extends Value[],
+  Return extends Value,
+> extends Value {
+  public constructor(public value: (...args: Args) => Return) {
+    super();
+  }
+
+  public call(...args: Args): Return {
+    return this.value(...args);
+  }
+
+  public apply(args: Args): Return {
+    return this.value(...args);
+  }
+}

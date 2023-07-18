@@ -9,15 +9,18 @@ import {
   IdentifierNode,
   AssignNode,
   MutationNode,
+  FunctionCallNode,
 } from "../data/Ast";
 import Environment from "../data/Environment";
 import type Value from "../data/Value";
 import {
   BooleanValue,
+  FunctionValue,
   NullValue,
   NumberValue,
   StringValue,
 } from "../data/Value";
+import buildinVars from "../data/buildinVars";
 import parse from "./parse";
 
 const numericalOperations: Record<
@@ -58,6 +61,13 @@ function interpreteNode(node: Node, env: Environment): Value {
   if (node instanceof IdentifierNode) {
     return env.get(node.name);
   }
+  if (node instanceof FunctionCallNode) {
+    const func = env.get(node.name);
+    if (!(func instanceof FunctionValue)) {
+      throw new Error(`${node.name} is not a function`);
+    }
+    return func.apply(node.args.map((arg) => interpreteNode(arg, env)));
+  }
   if (node instanceof AssignNode) {
     env.assign(node.name, interpreteNode(node.value, env), node.isMutable);
     return new NullValue();
@@ -84,6 +94,8 @@ function interpreteNode(node: Node, env: Environment): Value {
 
 export default function interprete(srcCode: string): Value {
   const env = new Environment();
-  env.assign("pi", new NumberValue(Math.PI), false);
+  for (const entry of Object.entries(buildinVars)) {
+    env.assign(entry[0], entry[1], false);
+  }
   return interpreteNode(parse(srcCode), env);
 }

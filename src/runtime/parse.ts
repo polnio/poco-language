@@ -9,14 +9,18 @@ import {
   StringNode,
   AssignNode,
   MutationNode,
+  FunctionCallNode,
 } from "../data/Ast";
 import type Token from "../data/Token";
 import {
   AssignToken,
   BinaryOpToken,
+  CloseParenToken,
   EqToken,
+  ExpressionToken,
   IdentifierToken,
   MutableToken,
+  NewLineToken,
   NullToken,
   NumberToken,
   OpenParenToken,
@@ -46,6 +50,10 @@ export default function parse(srcCode: string): ProgramNode {
   const tokens = lex(srcCode);
   const program = new ProgramNode([]);
   while (tokens.length > 0) {
+    if (tokens[0] instanceof NewLineToken) {
+      tokens.shift();
+      continue;
+    }
     program.statements.push(parseStatement(tokens));
   }
   return program;
@@ -135,6 +143,22 @@ function parseMultiplicationExpression(tokens: Token[]): ExpressionNode {
 function parsePrimaryExpression(tokens: Token[]): ExpressionNode {
   const token = safeShiftToken(tokens);
   if (token instanceof IdentifierToken) {
+    if (tokens[0] instanceof ExpressionToken) {
+      const args: ExpressionNode[] = [];
+      while (!(tokens.length === 0 || tokens[0] instanceof NewLineToken)) {
+        if (tokens[0] instanceof OpenParenToken) {
+          const innerParenTokens: Token[] = [];
+          while (!(tokens[0] instanceof CloseParenToken)) {
+            innerParenTokens.push(safeShiftToken(tokens));
+          }
+          args.push(parseExpression(innerParenTokens));
+        } else {
+          args.push(parsePrimaryExpression([tokens[0]]));
+        }
+        tokens.shift();
+      }
+      return new FunctionCallNode(token.value, args);
+    }
     return new IdentifierNode(token.value);
   }
   if (token instanceof NumberToken) {
@@ -151,5 +175,6 @@ function parsePrimaryExpression(tokens: Token[]): ExpressionNode {
     tokens.shift();
     return value;
   }
+  // return new NullNode();
   throw new Error(`Unexpected token: ${token.constructor.name}`);
 }

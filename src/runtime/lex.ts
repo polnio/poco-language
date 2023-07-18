@@ -7,6 +7,7 @@ import {
   EqToken,
   IdentifierToken,
   MutableToken,
+  NewLineToken,
   NumberToken,
   OpenParenToken,
   StringToken,
@@ -26,10 +27,11 @@ export default function lex(srcCode: string): Token[] {
   while (srcChars.length > 0) {
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const char = srcChars.shift()!;
-    if (/^\s$/.test(char)) {
+    if (char === "\n") {
+      tokens.push(new NewLineToken());
+    } else if (/^\s$/.test(char)) {
       continue;
-    }
-    if (char === "(") {
+    } else if (char === "(") {
       tokens.push(new OpenParenToken());
     } else if (char === ")") {
       tokens.push(new CloseParenToken());
@@ -38,7 +40,7 @@ export default function lex(srcCode: string): Token[] {
     } else if (["+", "-", "*", "/", "%"].includes(char)) {
       tokens.push(new BinaryOpToken(char));
     } else if (/^["']$/.test(char)) {
-      let string = char;
+      let string = "";
       while (srcChars[0] !== char) {
         const nextChar = srcChars.shift();
         if (nextChar === undefined) {
@@ -46,6 +48,7 @@ export default function lex(srcCode: string): Token[] {
         }
         string += nextChar;
       }
+      srcChars.shift();
       tokens.push(new StringToken(string));
     } else if (/^\d$/.test(char)) {
       let numberString = char;

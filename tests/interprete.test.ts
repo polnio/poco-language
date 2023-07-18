@@ -31,3 +31,9 @@ describe("assignment", () => {
     );
   });
 });
+
+describe("function calls", () => {
+  it("should interprete function call", () => {
+    expect(interprete("add 2 3")).toEqual(new NumberValue(5));
+  });
+});

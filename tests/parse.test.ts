@@ -2,9 +2,12 @@ import { describe, expect, it } from "vitest";
 import {
   AssignNode,
   BinaryOpNode,
+  FunctionCallNode,
+  IdentifierNode,
   MutationNode,
   NumberNode,
   ProgramNode,
+  StringNode,
 } from "../src/data/Ast";
 import parse from "../src/runtime/parse";
 
@@ -51,4 +54,28 @@ it("should parse numerical statement", () => {
       ),
     ]),
   );
+});
+
+describe("function calls", () => {
+  it("should parse function call", () => {
+    expect(parse('println "Hello World"')).toEqual(
+      new ProgramNode([
+        new FunctionCallNode("println", [new StringNode("Hello World")]),
+      ]),
+    );
+  });
+  it("should parse function call with multiple arguments", () => {
+    expect(parse('println "Hello " name (describe age)')).toEqual(
+      new ProgramNode([
+        new FunctionCallNode("println", [
+          new StringNode("Hello "),
+          new IdentifierNode("name"),
+          new FunctionCallNode("describe", [new IdentifierNode("age")]),
+        ]),
+      ]),
+    );
+  });
+  it("should not parse function call", () => {
+    expect(parse("pi")).toEqual(new ProgramNode([new IdentifierNode("pi")]));
+  });
 });

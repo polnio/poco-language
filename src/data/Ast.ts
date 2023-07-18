@@ -63,3 +63,12 @@ export class StringNode extends ExpressionNode {
 }
 
 export class NullNode extends ExpressionNode {}
+
+export class FunctionCallNode extends ExpressionNode {
+  public constructor(
+    public name: string,
+    public args: ExpressionNode[],
+  ) {
+    super();
+  }
+}
