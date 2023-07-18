@@ -1,7 +1,7 @@
 {
   "name": "poco-language",
   "version": "1.0.0",
-  "description": "",
+  "description": "My own programming language",
   "main": "index.js",
   "scripts": {
     "test": "vitest",
@@ -31,5 +31,22 @@
   "pkg": {
     "scripts": "build/**/*.js",
     "outputPath": "dist"
-  }
+  },
+  "dependencies": {
+    "eslint-config-standard": "^17.1.0",
+    "eslint-import-resolver-node": "^0.3.7",
+    "eslint-module-utils": "^2.8.0",
+    "eslint-plugin-es-x": "^7.1.0",
+    "eslint-scope": "^7.2.1",
+    "eslint-visitor-keys": "^3.4.1",
+    "prettier-linter-helpers": "^1.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/polnio/poco-language.git"
+  },
+  "bugs": {
+    "url": "https://github.com/polnio/poco-language/issues"
+  },
+  "homepage": "https://github.com/polnio/poco-language#readme"
 }
