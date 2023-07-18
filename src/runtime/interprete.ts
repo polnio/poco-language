@@ -38,6 +38,10 @@ const numericalOperations: Record<
   },
 };
 
+function isStringifiable(value: unknown): value is { toString: () => string } {
+  return (value as any).toString !== undefined;
+}
+
 function interpreteNode(node: Node, env: Environment): Value {
   if (node instanceof ProgramNode) {
     let result = new NullValue();
@@ -47,7 +51,17 @@ function interpreteNode(node: Node, env: Environment): Value {
     return result;
   }
   if (node instanceof StringNode) {
-    return new StringValue(node.value);
+    let string = node.value;
+    while (/\$([^ ]+)/.test(string)) {
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      const match = /\$([^ ]+)/.exec(string)!;
+      const value = env.get(match[1]).value;
+      if (!isStringifiable(value)) {
+        throw new Error(`${match[1]} is not a string`);
+      }
+      string = string.replace(match[0], value.toString());
+    }
+    return new StringValue(string);
   }
   if (node instanceof NumberNode) {
     return new NumberValue(node.value);

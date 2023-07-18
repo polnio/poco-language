@@ -1,3 +1,3 @@
 let name = "Po Co"
-let tries = 6
-println "My name is" name "and I have" tries "tries left"
+let dependencies_count = 0
+println "My name is $name and this project has $dependencies_count dependencies"

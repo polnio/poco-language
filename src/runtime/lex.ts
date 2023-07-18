@@ -62,7 +62,7 @@ export default function lex(srcCode: string): Token[] {
       tokens.push(new NumberToken(Number(numberString)));
     } else if (/^[a-zA-Z]$/.test(char)) {
       let textString = char;
-      while (/^[a-zA-Z0-9]$/.test(srcChars[0])) {
+      while (/^[a-zA-Z0-9_-]$/.test(srcChars[0])) {
         const nextChar = srcChars.shift();
         if (nextChar === undefined) {
           throw new Error("Unexpected end of input");
