@@ -8,6 +8,7 @@ import {
   NumberNode,
   IdentifierNode,
   AssignNode,
+  MutationNode,
 } from "../data/Ast";
 import Environment from "../data/Environment";
 import type Value from "../data/Value";
@@ -58,7 +59,11 @@ function interpreteNode(node: Node, env: Environment): Value {
     return env.get(node.name);
   }
   if (node instanceof AssignNode) {
-    env.assign(node.name, interpreteNode(node.value, env));
+    env.assign(node.name, interpreteNode(node.value, env), node.isMutable);
+    return new NullValue();
+  }
+  if (node instanceof MutationNode) {
+    env.mutate(node.name, interpreteNode(node.value, env));
     return new NullValue();
   }
   if (node instanceof BinaryOpNode) {
@@ -79,6 +84,6 @@ function interpreteNode(node: Node, env: Environment): Value {
 
 export default function interprete(srcCode: string): Value {
   const env = new Environment();
-  env.assign("pi", new NumberValue(Math.PI));
+  env.assign("pi", new NumberValue(Math.PI), false);
   return interpreteNode(parse(srcCode), env);
 }

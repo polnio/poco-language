@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import {
   AssignNode,
   BinaryOpNode,
+  MutationNode,
   NumberNode,
   ProgramNode,
 } from "../src/data/Ast";
@@ -18,6 +19,17 @@ describe("asignments", () => {
       new ProgramNode([new AssignNode("x", new NumberNode(1), true)]),
     );
   });
+  it("should parse variable mutation", () => {
+    expect(parse("let mut x = 1\nx = 2")).toEqual(
+      new ProgramNode([
+        new AssignNode("x", new NumberNode(1), true),
+        new MutationNode("x", new NumberNode(2)),
+      ]),
+    );
+  });
+  /* it("should throw error trying to mutate immutable variable", () => {
+    expect(() => parse("let x = 1\nx = 2")).toThrow();
+  }); */
 });
 
 it("should parse numerical statement", () => {

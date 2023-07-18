@@ -19,4 +19,15 @@ describe("assignment", () => {
   it("should interprete assignment", () => {
     expect(interprete("let x = 1\nx + 1")).toEqual(new NumberValue(2));
   });
+  it("should interprete mutable assignment", () => {
+    expect(interprete("let mut x = 1\nx + 1")).toEqual(new NumberValue(2));
+  });
+  it("should throw error trying to mutate immutable variable", () => {
+    expect(() => interprete("let x = 1\nx = 2")).toThrow();
+  });
+  it("should mutate variable", () => {
+    expect(interprete("let mut x = 1\nx = x + 1\nx")).toEqual(
+      new NumberValue(2),
+    );
+  });
 });

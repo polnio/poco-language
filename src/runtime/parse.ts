@@ -8,6 +8,7 @@ import {
   NullNode,
   StringNode,
   AssignNode,
+  MutationNode,
 } from "../data/Ast";
 import type Token from "../data/Token";
 import {
@@ -54,6 +55,9 @@ function parseStatement(tokens: Token[]): Node {
   if (tokens[0] instanceof AssignToken) {
     return parseAssignment(tokens);
   }
+  if (tokens[1] instanceof EqToken) {
+    return parseMutation(tokens);
+  }
   return parseExpression(tokens);
 }
 
@@ -77,6 +81,19 @@ function parseAssignment(tokens: Token[]): Node {
     return new AssignNode(nameToken.value, valueNode, isMutable);
   }
   return new AssignNode(nameToken.value, new NullNode(), isMutable);
+}
+
+function parseMutation(tokens: Token[]): Node {
+  const identifierToken = safeShiftToken(tokens);
+  if (!(identifierToken instanceof IdentifierToken)) {
+    throw new Error("Unexpected token: " + identifierToken.constructor.name);
+  }
+  if (!(tokens[0] instanceof EqToken)) {
+    throw new Error("Unexpected token: " + tokens[0].constructor.name);
+  }
+  tokens.shift();
+  const valueNode = parseExpression(tokens);
+  return new MutationNode(identifierToken.value, valueNode);
 }
 
 function parseAdditionExpression(tokens: Token[]): ExpressionNode {

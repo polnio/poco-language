@@ -10,8 +10,17 @@ export class ProgramNode extends Node {
 export class AssignNode extends Node {
   public constructor(
     public name: string,
-    public value: Node,
+    public value: ExpressionNode,
     public isMutable: boolean,
+  ) {
+    super();
+  }
+}
+
+export class MutationNode extends Node {
+  public constructor(
+    public name: string,
+    public value: ExpressionNode,
   ) {
     super();
   }
